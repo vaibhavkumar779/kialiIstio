@@ -85,3 +85,139 @@ Ensure that images are accessible and available in your container registry.
 
 Update and Rollback:
 If applicable, try updating your application or rolling back to a previous version to see if the issue persists.
+
+Kubernetes environment:
+
+    View Cluster Information:
+    Get information about the Kubernetes cluster, such as version, nodes, and pods.
+
+    bash
+
+kubectl cluster-info
+kubectl get nodes
+
+List Resources:
+List various resources within a namespace or across namespaces.
+
+bash
+
+kubectl get pods
+kubectl get services
+
+Describe Resources:
+Get detailed information about a specific resource.
+
+bash
+
+kubectl describe pod <pod_name>
+kubectl describe service <service_name>
+
+Check Logs:
+View logs from a specific pod or container.
+
+bash
+
+kubectl logs <pod_name> -c <container_name>
+
+Execute Commands in Containers:
+Run commands interactively in a container for debugging.
+
+bash
+
+kubectl exec -it <pod_name> -c <container_name> -- /bin/bash
+
+Port Forwarding:
+Forward a local port to a port on a pod for direct access.
+
+bash
+
+kubectl port-forward <pod_name> <local_port>:<container_port>
+
+Resource Creation and Deletion:
+Create or delete resources using YAML files.
+
+bash
+
+kubectl apply -f <resource_definition.yaml>
+kubectl delete -f <resource_definition.yaml>
+
+Edit Resources:
+Edit resources in real-time.
+
+bash
+
+kubectl edit <resource_type> <resource_name>
+
+Check Events:
+View cluster events for insights into resource activities.
+
+bash
+
+kubectl get events
+
+Scaling Resources:
+Scale the number of replicas in a deployment.
+
+bash
+
+kubectl scale deployment <deployment_name> --replicas=<desired_replicas>
+
+Resource Rollout:
+Perform rolling updates and rollbacks for deployments.
+
+bash
+
+kubectl set image deployment/<deployment_name> <container_name>=<new_image_version>
+kubectl rollout undo deployment/<deployment_name>
+
+Resource Labels and Selectors:
+Use labels and selectors to filter and manage resources.
+
+bash
+
+kubectl get pods -l <label_selector>
+
+Resource Logs and Events in One Command:
+Combine resource logs and events for a holistic view.
+
+bash
+
+kubectl logs -f <pod_name> -c <container_name> --previous
+
+Apply Configuration Changes:
+Apply changes to a resource using a configuration file.
+
+bash
+
+kubectl apply -f <resource_definition.yaml>
+
+Check Resource Quotas:
+View resource quotas for namespaces.
+
+bash
+
+kubectl get resourcequota -n <namespace>
+
+Check Resource Usage:
+Get resource utilization metrics for pods.
+
+bash
+
+kubectl top pods
+
+Get API Resources:
+List available API resources and versions.
+
+bash
+
+kubectl api-resources
+
+Get Help and Documentation:
+Access help and documentation for kubectl commands.
+
+bash
+
+    kubectl --help
+    kubectl explain <resource_type>
+
+These are just a few examples of the many CLI-related methods you can use to troubleshoot and manage your Kubernetes environment. The kubectl command-line tool provides a comprehensive set of commands to interact with and manage your Kubernetes clusters and resources.
