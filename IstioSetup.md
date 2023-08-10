@@ -22,6 +22,32 @@ Reference: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
 Reference : https://istio.io/latest/docs/setup/getting-started/
 
+```bash
+$curl -L https://istio.io/downloadIstio | sh -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   101  100   101    0     0    311      0 --:--:-- --:--:-- --:--:--   311
+100  4899  100  4899    0     0   5427      0 --:--:-- --:--:-- --:--:--  5427
+
+Downloading istio-1.18.2 from https://github.com/istio/istio/releases/download/1.18.2/istio-1.18.2-linux-amd64.tar.gz ...
+
+Istio 1.18.2 Download Complete!
+
+Istio has been successfully downloaded into the istio-1.18.2 folder on your system.
+
+Next Steps:
+See https://istio.io/latest/docs/setup/install/ to add Istio to your Kubernetes cluster.
+
+To configure the istioctl client tool for your workstation,
+add the /home/knoldus/istio-1.18.2/bin directory to your environment path variable with:
+	 export PATH="$PATH:/home/knoldus/istio-1.18.2/bin"
+
+Begin the Istio pre-installation check by running:
+	 istioctl x precheck 
+
+Need more information? Visit https://istio.io/latest/docs/setup/install/ 
+```
+
 **NOTE:** You need to provide PATH every time to use this istio configuration for binary file of Istio
 ```bash
 $ export PATH=IstioDirectoryPath/bin:$PATH
@@ -29,64 +55,78 @@ $ export PATH=IstioDirectoryPath/bin:$PATH
 **Or**
 
 ```bash
-$ export PATH=$PWD/bin:$PATH
+$ export PATH=$PWD/istio-latestversion/bin:$PATH
 ```
+**Note**: here *latestversion* is 1.18.2
+
+```bash
+$ istioctl x precheck
+✔ No issues found when checking the cluster. Istio is safe to install or upgrade!
+  To get started, check out https://istio.io/latest/docs/setup/getting-started/
+```
+
 
 * Up the minikube cluster, I ran with defined cpus and memory
     ```bash 
-    $ minikube start –cpus 6 –memory 8192
-    😄  minikube v1.26.0 on Ubuntu 22.04
+    $ minikube start --memory=8192 --cpus=6
+    😄  minikube v1.27.0 on Ubuntu 22.04
+    ❗  Kubernetes 1.25.0 has a known issue with resolv.conf. minikube is using a workaround that should work for most use cases.
+    ❗  For more information, see: https://github.com/kubernetes/kubernetes/issues/112135
     ✨  Automatically selected the docker driver
     📌  Using Docker driver with root privileges
     👍  Starting control plane node minikube in cluster minikube
     🚜  Pulling base image ...
     🔥  Creating docker container (CPUs=6, Memory=8192MB) ...
-    🐳  Preparing Kubernetes v1.24.1 on Docker 20.10.17 ...
-        ▪ Generating certificates and keys ...
-        ▪ Booting up control plane ...
-        ▪ Configuring RBAC rules ...
+    🐳  Preparing Kubernetes v1.25.0 on Docker 20.10.17 ...
+       ▪ Generating certificates and keys ...
+       ▪ Booting up control plane ...
+       ▪ Configuring RBAC rules ...
     🔎  Verifying Kubernetes components...
-        ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-    🌟  Enabled addons: storage-provisioner, default-storageclass
-    🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-
+       ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+   🌟  Enabled addons: storage-provisioner, default-storageclass
+   🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
     ```
   **Note:** To run properly, Istio requires 4 vCPUs and 8GB of RAM to work in minikube.
 
 * Install Istio in Cluster
 ```bash
 $ istioctl install --set profile=default -y
-ile=default -y
-✔ Istio core installed                                                                              
-✔ Istiod installed                                                                                  
-✔ Ingress gateways installed                                                                        
-✔ Installation complete                                                                             Making this installation the default for injection and validation.
-
-Thank you for installing Istio 1.14.  Please take a few minutes to tell us about your install/upgrade experience!  https://forms.gle/yEtCbt45FZ3VoDT5A
+✔ Istio core installed                                                                                  
+✔ Istiod installed                                                                                      
+✔ Ingress gateways installed                                                                            
+✔ Installation complete
+Making this installation the default for injection and validation.
 ```
 This installs istio core , istiod, istio ingress gateway on the cluster within the namespace *istio-system*. You can check it in following way:
 
 ```bash
+$ kubectl get namespace
+NAME              STATUS   AGE
+default           Active   15m
+istio-system      Active   2m7s
+kube-node-lease   Active   15m
+kube-public       Active   15m
+kube-system       Active   15m
 $ kubectl get all -n istio-system
 NAME                                        READY   STATUS    RESTARTS   AGE
-pod/istio-ingressgateway-5f86977657-cqv56   1/1     Running   0          72s
-pod/istiod-7587989b4f-6s9w5                 1/1     Running   0          112s
+pod/istio-ingressgateway-6f488f8f45-p2p5f   1/1     Running   0          2m4s
+pod/istiod-6dbd6db74f-drhzg                 1/1     Running   0          2m18s
 
-NAME                           TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
-service/istio-ingressgateway   LoadBalancer   10.96.84.182    <pending>     15021:30723/TCP,80:30373/TCP,443:30929/TCP   70s
-service/istiod                 ClusterIP      10.101.176.29   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        110s
+NAME                           TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                                      AGE
+service/istio-ingressgateway   LoadBalancer   10.103.154.255   <pending>     15021:30789/TCP,80:30991/TCP,443:31641/TCP   2m4s
+service/istiod                 ClusterIP      10.106.123.156   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        2m18s
 
 NAME                                   READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/istio-ingressgateway   1/1     1            1           72s
-deployment.apps/istiod                 1/1     1            1           112s
+deployment.apps/istio-ingressgateway   1/1     1            1           2m4s
+deployment.apps/istiod                 1/1     1            1           2m18s
 
 NAME                                              DESIRED   CURRENT   READY   AGE
-replicaset.apps/istio-ingressgateway-5f86977657   1         1         1       72s
-replicaset.apps/istiod-7587989b4f                 1         1         1       112s
+replicaset.apps/istio-ingressgateway-6f488f8f45   1         1         1       2m4s
+replicaset.apps/istiod-6dbd6db74f                 1         1         1       2m18s
 
 NAME                                                       REFERENCE                         TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/istio-ingressgateway   Deployment/istio-ingressgateway   <unknown>/80%   1         5         1          71s
-horizontalpodautoscaler.autoscaling/istiod                 Deployment/istiod                 <unknown>/80%   1         5         1          111s
+horizontalpodautoscaler.autoscaling/istio-ingressgateway   Deployment/istio-ingressgateway   <unknown>/80%   1         5         1          2m4s
+horizontalpodautoscaler.autoscaling/istiod                 Deployment/istiod                 <unknown>/80%   1         5         1          2m18s
 
 ```
 
@@ -96,19 +136,21 @@ Since we are using minikube **EXTERNAL-IP** is pending so we do following and ch
 $ minikube tunnel --cleanup
 Status:	
 	machine: minikube
-	pid: 1124634
+	pid: 592441
 	route: 10.96.0.0/12 -> 192.168.49.2
 	minikube: Running
 	services: [istio-ingressgateway]
     errors: 
 		minikube: no errors
 		router: no errors
-		loadbalancer emulator: no errors
-
+		loadbalancer emulator: no error
+```
+Now in a different terminal
+```bash
 $ kubectl get svc -n istio-system
-NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                                      AGE
-istio-ingressgateway   LoadBalancer   10.96.84.182    10.96.84.182   15021:30723/TCP,80:30373/TCP,443:30929/TCP   5m56s
-istiod                 ClusterIP      10.101.176.29   <none>         15010/TCP,15012/TCP,443/TCP,15014/TCP        6m36s
+NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                                      AGE
+istio-ingressgateway   LoadBalancer   10.103.154.255   10.103.154.255   15021:30789/TCP,80:30991/TCP,443:31641/TCP   5m34s
+istiod                 ClusterIP      10.106.123.156   <none>           15010/TCP,15012/TCP,443/TCP,15014/TCP        5m48s
 ```
 
 
@@ -346,7 +388,7 @@ $ curl "http://$GATEWAY_URL/productpage"
       
       <dl>
         <dt>Reviews served by:</dt>
-        <u>reviews-v1-68b4dcbdb9-4wlxr</u>
+        <u>reviews-v1-6494d87c7b-rg6nr</u>
         
       </dl>
       
@@ -370,7 +412,6 @@ $ curl "http://$GATEWAY_URL/productpage"
 
   </body>
 </html>
-
 ```
 
 * add monitoring to cluster for service mesh
