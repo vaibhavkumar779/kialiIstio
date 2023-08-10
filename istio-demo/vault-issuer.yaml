@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault
+  namespace: istio-system
+spec:
+  vault:
+    path: pki_prd/sign/istio-csr
+    server: http://vault.vault.svc.cluster.local:8200
+    auth:
+      tokenSecretRef:
+        name: vault-token
+        key: token

@@ -1,0 +1,33 @@
+app:
+  certmanager:
+    namespace: istio-system
+    issuer:
+      group: cert-manager.io
+      kind: Issuer
+      name: vault
+
+  tls:
+    trustDomain: "istio"
+    rootCAFile: /var/run/secrets/istio-csr/ca.pem
+    certificateDuration: 1h
+    istioCertificationDuration: 1h
+    istioCertificationRenewBefore: 30m
+
+  server:
+    maxCertificationDuration: 48h
+
+  volumes:
+  - name: root-ca
+    secret:
+      secretName: root-cert
+  volumeMounts:
+  - name: root-ca
+    mountPath: /var/cert/
+
+  volumes:
+  - name: istio-root-certs
+    secret:
+      secretName: istio-root-certs
+  volumeMounts:
+  - name: istio-root-certs
+    mountPath: /var/run/secrets/istio-csr
