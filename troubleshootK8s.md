@@ -1,59 +1,55 @@
 Troubleshooting in Kubernetes involves identifying and resolving issues that can arise during the deployment and operation of applications within a cluster. Here are some common troubleshooting methods you can use:
 
-    Check Logs:
-    Use kubectl logs to view container logs within pods. This helps you understand what's happening inside containers and identify error messages.
+## Check Logs:
+ Use kubectl logs to view container logs within pods. This helps you understand what's happening inside containers and identify error messages.
 
     Example:
-
-    php
-
+```bash
 kubectl logs <pod_name> -c <container_name>
-
+```
 Describe Resources:
 Use kubectl describe to get detailed information about a resource's current state, events, and conditions.
 
 Example:
 
-php
+```bash
 
 kubectl describe pod <pod_name>
-
+```
 List Resources:
 Use kubectl get to list resources and their statuses. This can help you quickly see the state of your deployments, pods, services, etc.
 
 Example:
 
-arduino
-
+```bash
 kubectl get pods
-
+```
 Check Events:
 Use kubectl get events to see cluster events, including pod creations, deletions, and errors. This provides insights into cluster activities.
 
 Example:
 
-arduino
-
+```bash
 kubectl get events
-
+```
 Exec into Containers:
 Use kubectl exec to execute commands in a running container for debugging purposes.
 
 Example:
 
-bash
+```bash
 
 kubectl exec -it <pod_name> -c <container_name> -- /bin/bash
-
+```
 Port Forwarding:
 Use kubectl port-forward to access a service locally for testing purposes.
 
 Example:
 
-php
+```bash
 
 kubectl port-forward <pod_name> <local_port>:<container_port>
-
+```
 Resource YAML Review:
 Check the YAML definitions of your resources, including pods, services, and deployments, for syntax errors or misconfigurations.
 
