@@ -37,3 +37,28 @@ Sure, here's the information separated into individual sentences:
 4. **Microservices Advantage**: Service meshes are especially useful in microservices architectures, where applications are built as a collection of smaller, interconnected services. They ensure these services work together smoothly.
 
 5. **Benefits**: By managing communication complexities, service meshes enhance performance, reduce errors, and simplify the troubleshooting of issues within modern applications.
+
+## Istio
+### Pilot
+Pilot is the head of the ship in an Istio mesh, so to speak. It stays synchronized with
+the underlying platform (e.g., Kubernetes) by tracking and representing the state and
+location of running services to the data plane. Pilot interfaces with your environ‐
+ment’s service discovery system, and produces configuration for the data-plane ser‐
+vice proxies (we’ll examine istio-proxy as a data-plane component later).
+As Istio evolves, more of Pilot’s focus will be the scalable serving of proxy configura‐
+tion and less on interfacing with underlying platforms. Pilot serves Envoy-compatible
+configurations by coalescing configuration and endpoint information from various
+sources and translating this into xDS objects. Another component, Galley, will even‐
+tually take responsibility for interfacing directly with underlying platforms.
+Planes
+### Galley
+Galley is Istio’s configuration aggregation and distribution component. As its role
+evolves, it will insulate the other Istio components from underlying platform and
+user-supplied configurations by ingesting and validating configurations. Galley uses
+the Mesh Configuration Protocol (MCP) as a mechanism to serve and distribute con‐
+figuration.
+### Mixer
+Capable of standing on its own, Mixer is a control-plane component designed to
+abstract infrastructure backends from the rest of Istio, where infrastructure backends
+are things like Stackdriver or New Relic. Mixer bears responsibility for precondition
+checking, quota management, and telemetry reporting.
