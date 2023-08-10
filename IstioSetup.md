@@ -93,7 +93,7 @@ horizontalpodautoscaler.autoscaling/istiod                 Deployment/istiod    
 Since we are using minikube **EXTERNAL-IP** is pending so we do following and check the IP then:
 
 ```bash
-$ minikube tunnel
+$ minikube tunnel --cleanup
 Status:	
 	machine: minikube
 	pid: 1124634
