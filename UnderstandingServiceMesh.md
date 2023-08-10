@@ -61,4 +61,24 @@ figuration.
 Capable of standing on its own, Mixer is a control-plane component designed to
 abstract infrastructure backends from the rest of Istio, where infrastructure backends
 are things like Stackdriver or New Relic. Mixer bears responsibility for precondition
-checking, quota management, and telemetry reporting.
+checking, quota management, and telemetry reporting.It does the following:
+• Enables platform and environment mobility
+• Provides granular control over operational policies and telemetry by taking
+responsibility for policy evaluation and telemetry reporting
+• Has a rich configuration model
+• Abstracts away most infrastructure concerns with intent-based configuration
+### Citadel
+Citadel empowers Istio to provide strong service-to-service and end-user authentica‐
+tion using mutual Transport Layer Security (mTLS), with built-in identity and cre‐
+dential management. Citadel’s CA component approves and signs certificate-signing
+requests (CSRs) sent by Citadel agents, and it performs key and certificate generation,
+deployment, rotation, and revocation. Citadel has an optional ability to interact with
+an identity directory during the CA process.
+Citadel has a pluggable architecture in which different CAs can be used so that it’s not
+using its self-generated, self-signed signing key and certificate to sign workload certif‐
+icates. The CA pluggability of Istio enables and facilitates the following:
+• Integrates with your organization’s public key infrastructure (PKI) system.
+• Secures communication between Istio and non-Istio legacy services (by sharing
+the same root of trust).
+• Secures the CA signing key by storing it in a well-protected environment (e.g.,
+HashiCorp Vault, hardware security module, or HSM)
